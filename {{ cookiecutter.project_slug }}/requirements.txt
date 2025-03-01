@@ -1,0 +1,22 @@
+# BASIC
+numpy
+pandas
+# ML & NLP
+torch
+spacy
+scikit-learn
+transformers
+accelerate
+lightning
+torchmetrics
+# DATA
+datasets
+# MONITORING
+wandb
+# VISUALIZATION
+matplotlib
+# OTHER
+pydantic
+python-dotenv
+tqdm
+yq
