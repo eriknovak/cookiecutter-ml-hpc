@@ -1,0 +1,86 @@
+[
+    {
+        "field": "project_name",
+        "help": {
+            "description": "The name of your ML project",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "project_description",
+        "help": {
+            "description": "A brief description of what your project does",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "project_slug",
+        "help": {
+            "description": "URL-friendly version of your project name",
+            "more_information": "Automatically generated from project_name"
+        }
+    },
+    {
+        "field": "version",
+        "help": {
+            "description": "Initial version number for your project",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "python_version",
+        "help": {
+            "description": "Python version required by your project",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "author_name",
+        "help": {
+            "description": "Your name as the project author",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "author_email",
+        "help": {
+            "description": "Your email address",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "maintainer_name",
+        "help": {
+            "description": "Name of the project maintainer",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "maintainer_email",
+        "help": {
+            "description": "Email of the project maintainer",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "github_username",
+        "help": {
+            "description": "Your GitHub username",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "homepage",
+        "help": {
+            "description": "Project homepage URL",
+            "more_information": ""
+        }
+    },
+    {
+        "field": "line_length",
+        "help": {
+            "description": "Maximum line length for code formatting",
+            "more_information": ""
+        }
+    }
+]
