@@ -1,0 +1,17 @@
+# BASIC
+numpy
+pandas
+# ML & NLP
+torch
+spacy
+scikit-learn
+transformers
+accelerate
+# DATA
+datasets
+# VIS
+matplotlib
+datachart
+# OTHER
+python-dotenv
+tqdm

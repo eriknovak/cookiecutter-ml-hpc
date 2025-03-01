@@ -1,0 +1,11 @@
+common:
+  dataset: "dataset"
+  seed: 42
+  num_workers: 4
+
+models:
+  model1:
+    learning_rate: 0.001
+    batch_size: 32
+    dropout: 0.2
+    num_epochs: 10
