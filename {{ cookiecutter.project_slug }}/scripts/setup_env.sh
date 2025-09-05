@@ -11,49 +11,62 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}Setting up development environment...${NC}"
 
-# Define environment name
-ENV_NAME={{ cookiecutter.project_slug }}
+# Define Python version from params or use default
+VENV_NAME=".venv"
 
-# Check if conda is installed
-if ! command -v conda &> /dev/null; then
-    echo -e "${RED}Conda is not installed. Please install Miniconda or Anaconda and try again.${NC}"
-    exit 1
-fi
-
-# Create conda environment
-echo -e "${GREEN}Creating conda environment...${NC}"
-if ! conda env list | grep -q "^${ENV_NAME} "; then
-    conda create -n $ENV_NAME python={{ cookiecutter.python_version }} -y
-    echo "Conda environment created: $ENV_NAME"
+# Create virtual environment
+echo -e "${GREEN}Creating virtual environment...${NC}"
+if [ ! -d "./$VENV_NAME" ]; then
+    if command -v uv &> /dev/null; then
+        echo -e "${GREEN}Using uv for virtual environment creation...${NC}"
+        uv venv $VENV_NAME --python 3.10
+    else
+        echo -e "${YELLOW}uv not found, falling back to python...${NC}"
+        if ! command -v python3.10 &> /dev/null; then
+            echo -e "${RED}Python 3.10 is not installed. Please install Python 3.10 and try again.${RED}"
+            exit 1
+        fi
+        python3.10 -m venv ./$VENV_NAME
+    fi
+    echo "Virtual environment created at $VENV_NAME"
 else
-    echo "Conda environment already exists: $ENV_NAME"
+    echo "Virtual environment already exists at $VENV_NAME"
 fi
 
-# Activate conda environment
-echo -e "${GREEN}Activating conda environment...${NC}"
-# Use source to work within the current script
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate $ENV_NAME
+# Activate virtual environment depending on the OS
+if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "darwin"* ]]; then
+    source ./$VENV_NAME/bin/activate
+elif [[ "$OSTYPE" == "msys" ]]; then
+    source ./$VENV_NAME/Scripts/activate
+fi
 
-# Upgrade pip
-echo -e "${GREEN}Upgrading pip...${NC}"
-pip install --upgrade pip
-
-# Install project in development mode
-echo -e "${GREEN}Installing project in development mode...${NC}"
-pip install -e .[dev]
+# Check if uv is available
+if command -v uv &> /dev/null; then
+    echo -e "${GREEN}Using uv for package management...${NC}"
+    # Install project in development mode using uv
+    uv pip install -e .[dev]
+else
+    echo -e "${YELLOW}uv not found, falling back to pip...${NC}"
+    # Upgrade pip
+    echo -e "${GREEN}Upgrading pip...${NC}"
+    pip install --upgrade pip
+    # Install project in development mode using pip
+    pip install -e .[dev]
+fi
 
 # Create necessary directories if they don't exist
 echo -e "${GREEN}Data directories...${NC}"
 echo -e "${YELLOW}!!! Ask the HPC staff for creating the project directories !!!${NC}"
 
-echo -e "${GREEN}Creating local data directories used for smaller datasets...${NC}"
-mkdir -p storage/data/raw storage/data/processed storage/data/final storage/data/external
+# Create necessary directories if they don't exist
+echo -e "${GREEN}Creating project directories...${NC}"
+mkdir -p data/raw data/interim data/final data/external
 
 # Success message
 echo -e "${GREEN}Environment setup complete!${NC}"
-echo "To activate the conda environment, run:"
-echo -e "  ${YELLOW}conda activate $ENV_NAME${NC}"
+echo "To activate the virtual environment, run:"
+echo -e "  ${YELLOW}source ./$VENV_NAME/bin/activate${NC} (Linux/macOS)"
+echo -e "  ${YELLOW}./$VENV_NAME/Scripts/activate${NC} (Windows)"
 
-# Deactivate conda environment
-conda deactivate
+# Deactivate virtual environment
+deactivate

@@ -1,6 +1,6 @@
 # Makefile for ML-HPC project
 
-.PHONY: setup clean lint test help
+.PHONY: setup clean lint help
 
 # Default target
 .DEFAULT_GOAL := help
@@ -11,7 +11,6 @@ help:
 	@echo "  setup         : Set up the development environment"
 	@echo "  clean         : Clean up generated files and caches"
 	@echo "  lint          : Run linters (black, isort, flake8)"
-	@echo "  test          : Run tests"
 	@echo "  help          : Show this help message"
 
 # Environment setup
@@ -31,11 +30,6 @@ clean:
 # Linting
 lint:
 	@echo "Running linters..."
-	black src tests
-	isort src tests
-	flake8 src tests
-
-# Testing
-test:
-	@echo "Running tests..."
-	pytest tests/
+	black src
+	isort src
+	flake8 src

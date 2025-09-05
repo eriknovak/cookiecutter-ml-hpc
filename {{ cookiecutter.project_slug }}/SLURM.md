@@ -1,6 +1,7 @@
 # SLURM (Simple Linux Utility for Resource Management)
 
 SLURM is a free and open-source job scheduling system designed for Linux clusters. It provides three key functions:
+
 1. Allocating compute resources to users for specific durations
 2. Providing a framework for starting, executing, and monitoring work on allocated resources
 3. Arbitrating resource contention
@@ -17,12 +18,22 @@ The `sbatch` command is used to submit batch jobs to the SLURM scheduler. It is 
 
 The key difference from `srun` is that `sbatch` submits a script to the job queue for later execution, while `srun` attempts to execute a command immediately. Think of `sbatch` as "submit and forget" - your job will run when resources are available, and you can check on it later using commands like `squeue` or `sacct`.
 
+```bash
+# Basic syntax
+sbatch [options] command [args]
+
+# Example: Run a sbatch script
+sbatch slurm/script.sh
+```
+
 ##### A typical SLURM batch script
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=job-name         # Name of the job
+#SBATCH --account=[account-name]    # Account name (NEEDED when user included in multiple projects; to know which resources to use)
 #SBATCH --output=output_%j.log      # Standard output file (%j = job ID)
-#SBATCH --error=error_%j.log        # Standard error file
+#SBATCH --error=error_%j.log        # Standard error file (same as output file) (change to .err if you want to separate the output and error logs)
 #SBATCH --time=12:00:00             # Time limit (format: HH:MM:SS)
 #SBATCH --partition=compute         # Partition (queue) to use
 #SBATCH --nodes=2                   # Number of nodes to allocate
@@ -31,8 +42,10 @@ The key difference from `srun` is that `sbatch` submits a script to the job queu
 #SBATCH --mail-type=END             # Email notification when job ends
 #SBATCH --mail-user=user@email.com  # Email address for notifications
 
-# Load necessary modules
-module load python
+# Import the environment variables
+source $HOME/{{cookiecutter.project_slug}}/.env
+
+# Activate the python environment
 
 # Set up environment
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
@@ -177,7 +190,9 @@ Understanding partition states is crucial for job scheduling:
 - **comp**: Compute partition (custom name, typically for general-purpose computing)
 
 ### Draining Process
+
 When a partition is being "drained":
+
 1. No new jobs will be scheduled on the partition
 2. Running jobs continue until completion
 3. Nodes become unavailable after all jobs finish

@@ -11,12 +11,11 @@ lightning
 torchmetrics
 # DATA
 datasets
-# MONITORING
-wandb
 # VISUALIZATION
 matplotlib
+# NOTEBOOKS
+marimo[recommended]
 # OTHER
 pydantic
 python-dotenv
 tqdm
-yq
